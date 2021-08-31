@@ -1,7 +1,7 @@
 {
-    "name": "osmphp/project",
-    "description": "Osm Framework-based project template",
-    "license": "GPL-3.0-only",
+    "name": "osmphp/sample-admin",
+    "description": "An experimental project that allows quick creating of the Admin UI and the HTTP API.",
+    "license": "AGPL-3.0-only",
     "authors": [
         {
             "name": "Vladislav Osmianskij",
