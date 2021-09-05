@@ -40,13 +40,16 @@ class MigrationGenerator extends Generator
 
 namespace {$migration->base_namespace};
 
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Blueprint as TableBlueprint;
 use Osm\Core\App;
 use Osm\Framework\Db\Db;
 use Osm\Framework\Migrations\Migration;
+use Osm\Framework\Search\Blueprint as IndexBlueprint;
+use Osm\Framework\Search\Search;
 
 /**
  * @property Db \$db
+ * @property Search \$search
  */
 class {$migration->base_class_name} extends Migration {
     protected function get_db(): Db {
@@ -55,15 +58,29 @@ class {$migration->base_class_name} extends Migration {
         return \$osm_app->db;
     }
 
+    protected function get_search(): Search {
+        global \$osm_app; /* @var App \$osm_app */
+
+        return \$osm_app->search;
+    }
+
     public function create(): void {
-        \$this->db->create('{$migration->table->name}', function (Blueprint \$table) {
+        \$this->db->create('{$migration->table->name}', function (TableBlueprint \$table) {
             \$table->increments('id');
             \$table->json('data')->nullable();
+        });
+
+        if (\$this->search->exists('{$migration->table->name}')) {
+            \$this->search->drop('{$migration->table->name}');
+        }
+
+        \$this->search->create('{$migration->table->name}', function (IndexBlueprint \$index) {
         });
     }
 
     public function drop(): void {
         \$this->db->drop('{$migration->table->name}');
+        \$this->search->drop('{$migration->table->name}');
     }
 }
  
