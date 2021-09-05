@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Generator extends Object_
 {
-    public function run(): void {
+    public function generate(): void {
 
     }
 

@@ -19,7 +19,7 @@ class Generate extends Command
 
     public function run(): void {
         foreach ($this->module->generator_class_names as $className) {
-            $this->createGenerator($className)->run();
+            $this->createGenerator($className)->generate();
 
 
         }
