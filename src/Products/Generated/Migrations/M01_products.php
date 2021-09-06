@@ -42,7 +42,7 @@ class M01_products extends Migration {
         }
 
         $this->search->create('products', function (IndexBlueprint $index) {
-            
+            $this->indexField_sku($index);            
         });
     }
 
@@ -55,6 +55,12 @@ class M01_products extends Migration {
         $table->string('sku');
     }
             
+    protected function indexField_sku(IndexBlueprint $index): void {
+        $index->string('sku')
+            ->filterable()
+            ->searchable()
+            ->sortable();
+    }
             
 }
  

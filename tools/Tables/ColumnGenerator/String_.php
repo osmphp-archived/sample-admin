@@ -17,7 +17,9 @@ EOT;
     }
 
     public function generateIndexField(): string {
-        return '';
+        return <<<EOT
+            \$this->indexField_{$this->property->name}(\$index);
+EOT;
     }
 
     public function generateTableColumnMethod(): string {
@@ -36,6 +38,37 @@ EOT;
     }
 
     public function generateIndexFieldMethod(): string {
-        return '';
+        $fluentCalls = '';
+
+        if ($this->property->faceted) {
+            $fluentCalls .= "\n            ->faceted()";
+        }
+
+        if ($this->property->filterable) {
+            $fluentCalls .= "\n            ->filterable()";
+        }
+
+        if ($this->property->searchable) {
+            $fluentCalls .= "\n            ->searchable()";
+        }
+
+        if ($this->property->sortable) {
+            $fluentCalls .= "\n            ->sortable()";
+        }
+
+        if (!$fluentCalls) {
+            return <<<EOT
+    protected function indexField_{$this->property->name}(IndexBlueprint \$index): void {
+    }
+
+EOT;
+        }
+
+        return <<<EOT
+    protected function indexField_{$this->property->name}(IndexBlueprint \$index): void {
+        \$index->string('{$this->property->name}'){$fluentCalls};
+    }
+
+EOT;
     }
 }

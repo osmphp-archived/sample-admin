@@ -9,6 +9,7 @@ use My\Tables\Attributes\Column;
 
 /**
  * @property int $id #[Column\Id]
+ * @property ?\stdClass $data
  */
 class Record extends Object_
 {
