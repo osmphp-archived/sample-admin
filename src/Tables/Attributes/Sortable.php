@@ -8,7 +8,7 @@ namespace My\Tables\Attributes;
  * Column can be used in collection sorting
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final class Sortable extends Column
+final class Sortable extends Migrated
 {
 
 }

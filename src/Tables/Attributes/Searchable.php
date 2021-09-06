@@ -8,7 +8,7 @@ namespace My\Tables\Attributes;
  * Column is searched via collection search
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final class Searchable extends Column
+final class Searchable extends Migrated
 {
 
 }

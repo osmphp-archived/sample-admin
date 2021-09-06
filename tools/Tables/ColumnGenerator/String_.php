@@ -6,23 +6,17 @@ namespace My\Tools\Tables\ColumnGenerator;
 
 use My\Tools\Tables\ColumnGenerator;
 use Osm\Core\Attributes\Name;
+use Osm\Core\Exceptions\NotSupported;
+use function Osm\__;
 
 #[Name('string')]
 class String_ extends ColumnGenerator
 {
-    public function generateTableColumn(): string {
-        return <<<EOT
-            \$this->tableColumn_{$this->property->name}(\$table);
-EOT;
-    }
-
-    public function generateIndexField(): string {
-        return <<<EOT
-            \$this->indexField_{$this->property->name}(\$index);
-EOT;
-    }
-
     public function generateTableColumnMethod(): string {
+        if ($this->property->type !== 'string') {
+            throw new NotSupported(__("'DbColumn\\String_' properties should have 'string' type"));
+        }
+
         $fluentCalls = '';
 
         if ($this->property->nullable) {
@@ -32,43 +26,19 @@ EOT;
         return <<<EOT
     protected function tableColumn_{$this->property->name}(TableBlueprint \$table): void {
         \$table->string('{$this->property->name}'){$fluentCalls};
-    }
-
+    }\n\n
 EOT;
     }
 
     public function generateIndexFieldMethod(): string {
-        $fluentCalls = '';
-
-        if ($this->property->faceted) {
-            $fluentCalls .= "\n            ->faceted()";
-        }
-
-        if ($this->property->filterable) {
-            $fluentCalls .= "\n            ->filterable()";
-        }
-
-        if ($this->property->searchable) {
-            $fluentCalls .= "\n            ->searchable()";
-        }
-
-        if ($this->property->sortable) {
-            $fluentCalls .= "\n            ->sortable()";
-        }
-
-        if (!$fluentCalls) {
-            return <<<EOT
-    protected function indexField_{$this->property->name}(IndexBlueprint \$index): void {
-    }
-
-EOT;
+        if (!$this->index_field_fluent_calls) {
+            return parent::generateIndexFieldMethod();
         }
 
         return <<<EOT
     protected function indexField_{$this->property->name}(IndexBlueprint \$index): void {
-        \$index->string('{$this->property->name}'){$fluentCalls};
-    }
-
+        \$index->string('{$this->property->name}'){$this->index_field_fluent_calls};
+    }\n\n
 EOT;
     }
 }

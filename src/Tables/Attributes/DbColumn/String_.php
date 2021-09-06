@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace My\Tables\Attributes\Column;
+namespace My\Tables\Attributes\DbColumn;
 
 /**
  * Column's value is stored in a dedicated table `varchar` column

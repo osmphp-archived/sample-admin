@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace My\Tables\Attributes\Column;
+namespace My\Tables\Attributes\DbColumn;
 
-use My\Tables\Attributes\Column;
+use My\Tables\Attributes\DbColumn;
 
 /**
  * Column's value is stored in one or more dedicated table columns
  */
-class Dedicated extends Column
+class Dedicated extends DbColumn
 {
 
 }

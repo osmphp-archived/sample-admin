@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace My\Tools\Tables;
 
-use My\Tables\Attributes\Column;
+use My\Tables\Attributes\DbColumn;
 use My\Tables\Attributes\Faceted;
 use My\Tables\Attributes\Filterable;
 use My\Tables\Attributes\Searchable;
@@ -104,9 +104,9 @@ class ClassExtractor extends Object_
         return $properties;
     }
 
-    protected function getColumnAttribute(\Osm\Core\Property $property): ?Column {
+    protected function getColumnAttribute(\Osm\Core\Property $property): ?DbColumn {
         foreach ($property->attributes as $attribute) {
-            if ($attribute instanceof Column) {
+            if ($attribute instanceof DbColumn) {
                 return $attribute;
             }
         }
@@ -115,7 +115,7 @@ class ClassExtractor extends Object_
     }
 
     protected function extractProperty(\Osm\Core\Property $property,
-        Column $column): \stdClass|Property
+        DbColumn $column): \stdClass|Property
     {
         return (object)[
             'name' => $property->name,

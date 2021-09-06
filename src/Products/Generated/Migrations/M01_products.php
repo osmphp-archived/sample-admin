@@ -34,7 +34,10 @@ class M01_products extends Migration {
             $table->increments('id');
             $table->json('data')->nullable();
             
-            $this->tableColumn_sku($table);            
+            $this->tableColumn_id($table);
+            $this->tableColumn_sku($table);
+            $this->tableColumn_description($table);
+            
         });
 
         if ($this->search->exists('products')) {
@@ -42,7 +45,10 @@ class M01_products extends Migration {
         }
 
         $this->search->create('products', function (IndexBlueprint $index) {
-            $this->indexField_sku($index);            
+            $this->indexField_id($index);
+            $this->indexField_sku($index);
+            $this->indexField_description($index);
+            
         });
     }
 
@@ -51,16 +57,32 @@ class M01_products extends Migration {
         $this->search->drop('products');
     }
 
+    protected function tableColumn_id(TableBlueprint $table): void {
+    }
+
     protected function tableColumn_sku(TableBlueprint $table): void {
         $table->string('sku');
     }
+
+    protected function tableColumn_description(TableBlueprint $table): void {
+    }
+
             
+    protected function indexField_id(IndexBlueprint $index): void {
+    }
+
     protected function indexField_sku(IndexBlueprint $index): void {
         $index->string('sku')
             ->filterable()
             ->searchable()
             ->sortable();
     }
+
+    protected function indexField_description(IndexBlueprint $index): void {
+        $index->string('description')
+            ->searchable();
+    }
+
             
 }
  

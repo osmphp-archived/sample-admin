@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace My\Tables\Attributes\Column;
+namespace My\Tables\Attributes\DbColumn;
 
-use My\Tables\Attributes\Column;
+use My\Tables\Attributes\DbColumn;
 
 /**
  * Column's value is stored in the `id` column
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-final class Id extends Column
+final class Id extends DbColumn
 {
     public string $type = 'id';
 }
