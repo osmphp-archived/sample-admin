@@ -33,6 +33,8 @@ class M01_products extends Migration {
         $this->db->create('products', function (TableBlueprint $table) {
             $table->increments('id');
             $table->json('data')->nullable();
+            
+            $this->tableColumn_sku($table);            
         });
 
         if ($this->search->exists('products')) {
@@ -40,6 +42,7 @@ class M01_products extends Migration {
         }
 
         $this->search->create('products', function (IndexBlueprint $index) {
+            
         });
     }
 
@@ -47,5 +50,11 @@ class M01_products extends Migration {
         $this->db->drop('products');
         $this->search->drop('products');
     }
+
+    protected function tableColumn_sku(TableBlueprint $table): void {
+        $table->string('sku');
+    }
+            
+            
 }
  

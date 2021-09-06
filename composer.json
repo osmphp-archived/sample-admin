@@ -1,6 +1,6 @@
 {
     "name": "osmphp/sample-admin",
-    "description": "An experimental project that allows quick creating of the Admin UI and the HTTP API.",
+    "description": "An experimental project that allows quick creation of the Admin UI and the HTTP API.",
     "license": "AGPL-3.0-only",
     "authors": [
         {

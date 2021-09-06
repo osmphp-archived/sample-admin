@@ -4,8 +4,14 @@ declare(strict_types=1);
 
 namespace My\Tools\Tables;
 
+use My\Tables\Attributes\Column;
+use My\Tables\Attributes\Faceted;
+use My\Tables\Attributes\Filterable;
+use My\Tables\Attributes\Searchable;
+use My\Tables\Attributes\Sortable;
 use My\Tables\Attributes\Table;
 use My\Tools\Tables\Hints\Class_;
+use My\Tools\Tables\Hints\Property;
 use Osm\Core\BaseModule;
 use Osm\Core\Exceptions\NotImplemented;
 use Osm\Core\Exceptions\NotSupported;
@@ -80,6 +86,47 @@ class ClassExtractor extends Object_
             'table' => $class->attributes[Table::class],
             'module_namespace' => $module->namespace,
             'module_path' => $module->path,
+            'properties' => $this->extractProperties($class),
+        ];
+    }
+
+    protected function extractProperties(\Osm\Core\Class_ $class): array {
+        $properties = [];
+
+        foreach ($class->properties as $property) {
+            if ($column = $this->getColumnAttribute($property)) {
+                $properties[$property->name] = $this->extractProperty($property,
+                    $column);
+            }
+
+        }
+
+        return $properties;
+    }
+
+    protected function getColumnAttribute(\Osm\Core\Property $property): ?Column {
+        foreach ($property->attributes as $attribute) {
+            if ($attribute instanceof Column) {
+                return $attribute;
+            }
+        }
+
+        return null;
+    }
+
+    protected function extractProperty(\Osm\Core\Property $property,
+        Column $column): \stdClass|Property
+    {
+        return (object)[
+            'name' => $property->name,
+            'type' => $property->type,
+            'array' => $property->array,
+            'nullable' => $property->nullable,
+            'column' => $column,
+            'faceted' => $property->attributes[Faceted::class] ?? null,
+            'filterable' => $property->attributes[Filterable::class] ?? null,
+            'searchable' => $property->attributes[Searchable::class] ?? null,
+            'sortable' => $property->attributes[Sortable::class] ?? null,
         ];
     }
 }

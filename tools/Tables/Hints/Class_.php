@@ -11,6 +11,7 @@ use My\Tables\Attributes\Table;
  * @property Table $table
  * @property string $module_namespace
  * @property string $module_path
+ * @property Property[] $properties
  */
 class Class_
 {

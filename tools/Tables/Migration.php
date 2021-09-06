@@ -11,9 +11,9 @@ use Osm\Core\Object_;
 
 /**
  * @property Class_ $class
- * @property Table $table
  * @property bool $create
  *
+ * @property Table $table
  * @property string $base_filename
  * @property string $base_namespace
  * @property string $base_class_name
@@ -23,6 +23,11 @@ use Osm\Core\Object_;
  */
 class Migration extends Object_
 {
+    /**
+     * @var ColumnGenerator[]
+     */
+    public array $columns = [];
+
     protected function get_base_filename(): string {
         return "{$this->class->module_path}/Generated/Migrations/" .
             "{$this->base_class_name}.php";
@@ -47,5 +52,9 @@ class Migration extends Object_
 
     protected function get_derived_class_name(): string {
         return $this->base_class_name;
+    }
+
+    protected function get_table(): Table {
+        return $this->class->table;
     }
 }
